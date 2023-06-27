@@ -49,7 +49,7 @@ const NavbarComponent = ({ fullname, id }) => {
     <>
       { isLoading && <SpinnerElement/> }
       <div
-        className='fixed inset-x-0 flex justify-between px-5 py-3 bg-white box-border shadow'
+        className='fixed inset-x-0 flex justify-between px-5 py-3 bg-white box-border shadow z-50'
       >
         <div
           className='

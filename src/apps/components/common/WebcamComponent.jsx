@@ -1,8 +1,11 @@
-import React, { useState } from 'react'
+import React, { useState, useRef, useCallback } from 'react'
 import Webcam from 'react-webcam'
 
 const WebcamComponent = () => {
+  const webcamRef = useRef(null)
+
   const [isLoading, setIsLoading] = useState(true)
+  const [imageCapture, setImageCapture] = useState(null)
 
   const videoConstraints = {
     width: 480,
@@ -11,6 +14,11 @@ const WebcamComponent = () => {
   }
 
   const handleIsLoading = () => setIsLoading(false)
+
+  const getCapture = useCallback(() => {
+    const imageCaptureResult = webcamRef.current.getScreenshot()
+    setImageCapture(imageCaptureResult)
+  }, [])
 
   return (
     <div
@@ -53,7 +61,40 @@ const WebcamComponent = () => {
           videoConstraints={videoConstraints}
           mirrored={true}
           onLoadedData={handleIsLoading}
+          ref={webcamRef}
         />
+      </div>
+
+      <button
+        type='button'
+        onClick={getCapture}
+        className='
+          p-3
+          bg-blue-600
+          hover:bg-blue-400
+          active:bg-blue-300
+          rounded
+          text-white
+          my-3
+          shadow-lg
+        '
+      >
+        Ambil screenshot
+      </button>
+
+      <div>
+        Hasil Screenshot
+        {
+          imageCapture && (
+            <img
+              src={imageCapture}
+              alt='screenshot output'
+              className='
+                h-56
+              '
+            />
+          )
+        }
       </div>
     </div>
   )
