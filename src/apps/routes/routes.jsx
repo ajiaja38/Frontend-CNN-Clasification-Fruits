@@ -15,6 +15,7 @@ import {
 
   // User Pages
   HomePageUsers,
+  UserProfile,
 
   // Error
   UnAuthorizedPages
@@ -30,7 +31,7 @@ const Router = () => {
         <Route path='/unAuthorized' element={<UnAuthorizedPages/>}/>
 
         {/* Parent Routes Auth Requirement */}
-        <Route element={<RequireAuth redirectPath='/login' />}>
+        <Route element={<RequireAuth redirectPath='/' />}>
 
           {/* Private Routes For Admin */}
           <Route
@@ -93,6 +94,19 @@ const Router = () => {
               </PrivateRoute>
             }
           />
+
+          <Route
+            path='/user/myProfile/:id'
+            element={
+              <PrivateRoute
+                redirectPath='/unAuthorized'
+                role='user'
+              >
+                <UserProfile/>
+              </PrivateRoute>
+            }
+          >
+          </Route>
         </Route>
       </Routes>
     </BrowserRouter>

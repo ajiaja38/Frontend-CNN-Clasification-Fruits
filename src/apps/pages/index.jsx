@@ -11,6 +11,7 @@ import AddNewUsers from './admin/AddNewUsers'
 
 // Users Pages
 import HomePageUsers from './client/HomePageUsers'
+import UserProfile from './client/UserProfile'
 
 // error pages
 import UnAuthorizedPages from './error/UnAuthorizedPages'
@@ -29,6 +30,7 @@ export {
 
   // users
   HomePageUsers,
+  UserProfile,
 
   // error
   UnAuthorizedPages
