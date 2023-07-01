@@ -7,7 +7,7 @@ import ToastNotification from '../helpers/ToasNotify'
 import Swal from 'sweetalert2'
 import SpinnerElement from '../helpers/SpinnerElement'
 
-const NavbarComponent = ({ id }) => {
+const NavbarComponent = ({ fullname, id }) => {
   const [dropdown, setDropdown] = useState(false)
   const [isLoading, setIsLoading] = useState(false)
 
@@ -52,7 +52,10 @@ const NavbarComponent = ({ id }) => {
           <h1 className='font-bold text-lg md:text-2xl inline-block'>SeFruit App</h1>
         </NavLink>
 
-        <div>
+        <div className='flex gap-2 justify-center items-center'>
+
+          <h2 className='hidden md:inline-block'>Halo, { fullname || <>Admin</> } |</h2>
+
           <button
             onClick={handleDropdown}
             className='bg-blue-500 hover:bg-blue-200 active:bg-blue-300 rounded-lg px-2 py-1 text-white shadow'

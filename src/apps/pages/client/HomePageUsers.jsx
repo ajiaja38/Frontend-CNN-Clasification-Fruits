@@ -46,7 +46,9 @@ const HomePageUsers = () => {
               <span>
                 Deteksi Gambar
               </span>
-              <i className="fa-solid fa-image ml-2"></i>
+              <div className='hidden lg:inline-block'>
+                <i className="fa-solid fa-image ml-2"></i>
+              </div>
             </button>
 
             <button
@@ -63,7 +65,9 @@ const HomePageUsers = () => {
               <span>
                 Deteksi WebCam
               </span>
-              <i className="fa-solid fa-camera ml-2"></i>
+              <div className='hidden lg:inline-block'>
+                <i className="fa-solid fa-camera ml-2"></i>
+              </div>
             </button>
           </div>
         </div>
