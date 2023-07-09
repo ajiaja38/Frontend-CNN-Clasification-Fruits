@@ -4,6 +4,7 @@ import NavbarComponent from '../../components/client/Navbar'
 import jwtDecode from 'jwt-decode'
 import UsersSourceAPI from '../../api/resources/UsersSource'
 import ToastNotification from '../../components/helpers/ToasNotify'
+import FooterComponent from '../../components/client/Footer'
 
 const Layout = ({ children }) => {
   const [userId, setUserId] = useState('')
@@ -25,13 +26,16 @@ const Layout = ({ children }) => {
   }, [])
 
   return (
-    <div className='bg-blue-50 min-h-screen h-full'>
-      <NavbarComponent
-        fullname={fullname}
-        id={userId}
-      />
-      {children}
-    </div>
+    <>
+      <div className='bg-blue-50 min-h-screen h-full'>
+        <NavbarComponent
+          fullname={fullname}
+          id={userId}
+        />
+        {children}
+        <FooterComponent/>
+      </div>
+    </>
   )
 }
 
