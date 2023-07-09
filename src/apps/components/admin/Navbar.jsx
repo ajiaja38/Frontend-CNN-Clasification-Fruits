@@ -111,7 +111,7 @@ const NavbarComponent = ({ fullname, id }) => {
         >
           <div
             className='
-              absolute
+              fixed
               top-16
               md:top-20
               right-4

@@ -1,19 +1,33 @@
 /* eslint-disable no-unneeded-ternary */
 import React, { useState } from 'react'
+import ToastNotification from '../helpers/ToasNotify'
+import PredictionAPI from '../../api/resources/PredictionSource'
 
 const FormUploadsFile = () => {
+  const [selectedImageUrl, setSelectedImageUrl] = useState(null)
   const [selectedImage, setSelectedImage] = useState(null)
   const [detectionResult, setDetectionResult] = useState(null)
 
   const handleImageUpload = (e) => {
     const file = e.target.files[0]
+    setSelectedImage(file)
+
     const imageUrl = URL.createObjectURL(file)
-    setSelectedImage(imageUrl)
+    setSelectedImageUrl(imageUrl)
     setDetectionResult(null)
   }
 
-  const handleDetectionResult = () => {
-    setDetectionResult('Ini merupakan buah Apel.')
+  const handleDetectionResult = async () => {
+    if (selectedImageUrl) {
+      const formData = new FormData()
+      formData.append('image', selectedImage)
+      try {
+        const response = await PredictionAPI.predict(formData)
+        setDetectionResult(response)
+      } catch (error) {
+        ToastNotification.toastError(error.response.data.message)
+      }
+    }
   }
 
   return (
@@ -79,10 +93,10 @@ const FormUploadsFile = () => {
           '
         >
           {
-            selectedImage
+            selectedImageUrl
               ? (
                   <img
-                    src={selectedImage}
+                    src={selectedImageUrl}
                     className='
                       w-full
                       h-64
@@ -110,13 +124,13 @@ const FormUploadsFile = () => {
               ease-out
               duration-150
               ${
-                selectedImage
+                selectedImageUrl
                 ? 'bg-blue-500 hover:bg-blue-300 active:bg-blue-200'
                 : 'cursor-not-allowed bg-blue-300'
               }
             `
           }
-          disabled={selectedImage ? false : true}
+          disabled={selectedImageUrl ? false : true}
         >
           Identifikasi
         </button>

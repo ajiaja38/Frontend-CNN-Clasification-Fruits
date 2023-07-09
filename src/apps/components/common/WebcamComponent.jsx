@@ -1,11 +1,14 @@
 import React, { useState, useRef, useCallback } from 'react'
 import Webcam from 'react-webcam'
+import dataURItoBlob from '../helpers/CaptureConverter'
+import PredictionAPI from '../../api/resources/PredictionSource'
+import ToastNotification from '../helpers/ToasNotify'
 
 const WebcamComponent = () => {
   const webcamRef = useRef(null)
 
   const [isLoading, setIsLoading] = useState(true)
-  const [imageCapture, setImageCapture] = useState(null)
+  const [predictionResult, setPredictionResult] = useState(null)
 
   const videoConstraints = {
     width: 480,
@@ -15,9 +18,22 @@ const WebcamComponent = () => {
 
   const handleIsLoading = () => setIsLoading(false)
 
+  const predictImage = async (data) => {
+    const formData = new FormData()
+    formData.append('image', data)
+    try {
+      const response = await PredictionAPI.predict(formData)
+      setPredictionResult(response)
+    } catch (error) {
+      ToastNotification.toastError(error.response.data.message)
+    }
+  }
+
   const getCapture = useCallback(() => {
     const imageCaptureResult = webcamRef.current.getScreenshot()
-    setImageCapture(imageCaptureResult)
+    const convertImage = dataURItoBlob(imageCaptureResult)
+
+    predictImage(convertImage)
   }, [])
 
   return (
@@ -62,6 +78,7 @@ const WebcamComponent = () => {
           mirrored={true}
           onLoadedData={handleIsLoading}
           ref={webcamRef}
+          screenshotFormat='image/jpeg'
         />
       </div>
 
@@ -79,23 +96,29 @@ const WebcamComponent = () => {
           shadow-lg
         '
       >
-        Ambil screenshot
+        Prediksi
       </button>
 
-      <div>
-        Hasil Screenshot
-        {
-          imageCapture && (
-            <img
-              src={imageCapture}
-              alt='screenshot output'
+      {
+        predictionResult && (
+          <div
+            className='
+              w-full
+              p-1
+            '
+          >
+            <h1
               className='
-                h-56
+                text-2xl
+                font-semibold
+                text-center
               '
-            />
-          )
-        }
-      </div>
+            >
+              {predictionResult}
+            </h1>
+          </div>
+        )
+      }
     </div>
   )
 }
