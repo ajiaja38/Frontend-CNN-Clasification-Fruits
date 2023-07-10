@@ -1,6 +1,6 @@
 import jpeg from 'jpeg-js'
 
-function dataURItoJPG (dataURI) {
+const dataURItoJPG = (dataURI) => {
   const byteString = atob(dataURI.split(',')[1])
   const uint8Array = new Uint8Array(byteString.length)
   for (let i = 0; i < byteString.length; i++) {
