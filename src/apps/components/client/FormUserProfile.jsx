@@ -59,7 +59,7 @@ const FormUserProfile = () => {
     <>
       { isLoading && <SpinnerElement/> }
       <form onSubmit={updateUserById}>
-        <div className='bg-white shadow p-5 h-full rounded-lg flex flex-col md:flex-row'>
+        <div className='bg-white shadow p-5 h-full rounded-lg flex flex-col md:flex-row mb-20'>
           <div className='px-6 py-8 lg:px-12 flex flex-col gap-6 basis-1/2 '>
             <h2 className='font-bold text-xl mb-2'>Informasi Akun</h2>
             <div

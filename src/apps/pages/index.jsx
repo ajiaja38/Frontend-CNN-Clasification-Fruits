@@ -8,6 +8,9 @@ import DashboardAdmin from './admin/DashboardAdmin'
 import Users from './admin/Users'
 import UpdateUsers from './admin/UpdateUsers'
 import AddNewUsers from './admin/AddNewUsers'
+import Fruits from './admin/Fruits'
+import UpdateFruits from './admin/UpdateFruits'
+import AddNewFruits from './admin/AddNewFruits'
 
 // Users Pages
 import HomePageUsers from './client/HomePageUsers'
@@ -27,6 +30,9 @@ export {
   Users,
   UpdateUsers,
   AddNewUsers,
+  Fruits,
+  UpdateFruits,
+  AddNewFruits,
 
   // users
   HomePageUsers,

@@ -12,6 +12,9 @@ import {
   Users,
   UpdateUsers,
   AddNewUsers,
+  Fruits,
+  UpdateFruits,
+  AddNewFruits,
 
   // User Pages
   HomePageUsers,
@@ -78,6 +81,42 @@ const Router = () => {
                 role='admin'
               >
                 <UpdateUsers/>
+              </PrivateRoute>
+            }
+          />
+
+          <Route
+            path='/fruits'
+            element={
+              <PrivateRoute
+                redirectPath='/unAuthorized'
+                role='admin'
+              >
+                <Fruits/>
+              </PrivateRoute>
+            }
+          />
+
+          <Route
+            path='/fruits/addNewFruits'
+            element={
+              <PrivateRoute
+                redirectPath='/unAuthorized'
+                role='admin'
+              >
+                <AddNewFruits/>
+              </PrivateRoute>
+            }
+          />
+
+          <Route
+            path='/fruits/detail/:id'
+            element={
+              <PrivateRoute
+                redirectPath='/unAuthorized'
+                role='admin'
+              >
+                <UpdateFruits/>
               </PrivateRoute>
             }
           />

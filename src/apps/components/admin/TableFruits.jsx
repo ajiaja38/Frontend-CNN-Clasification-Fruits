@@ -1,27 +1,27 @@
 import React, { useEffect, useState } from 'react'
-import UsersSourceAPI from '../../api/resources/UsersSource'
+import FruitsSourceAPI from '../../api/resources/FruitsSource'
 import ToastNotification from '../helpers/ToasNotify'
-import { NavLink } from 'react-router-dom'
 import Swal from 'sweetalert2'
 import SpinnerElement from '../helpers/SpinnerElement'
+import { NavLink } from 'react-router-dom'
 import ReactPaginate from 'react-paginate'
 
-const TableUsers = () => {
-  const [users, setUsers] = useState([])
+const TableFruits = () => {
+  const [fruits, setFruits] = useState([])
   const [currentPage, setCurrentPage] = useState(1)
-  const [totalUsers, setTotalUsers] = useState(0)
+  const [totalFruits, setTotalFruits] = useState(0)
   const [totalPages, setTotalPages] = useState(0)
   const [isLoading, setIsLoading] = useState(false)
 
   const limit = 5
 
-  const getAllUsers = async (page, limit) => {
+  const getAllFruits = async (page, limit) => {
     setIsLoading(true)
     try {
-      const response = await UsersSourceAPI.getAllUsersByPaginate(page, limit)
-      setUsers(response.users)
+      const response = await FruitsSourceAPI.getAllFruitsByPaginate(page, limit)
+      setFruits(response.fruits)
       setCurrentPage(response.page)
-      setTotalUsers(response.totalUsers)
+      setTotalFruits(response.totalFruits)
       setTotalPages(response.totalPages)
       console.log(response)
     } catch (error) {
@@ -34,16 +34,16 @@ const TableUsers = () => {
     setCurrentPage(selected + 1)
   }
 
-  const deleteUsers = async (id) => {
+  const deleteFruits = async (id) => {
     setIsLoading(true)
     try {
-      const response = await UsersSourceAPI.deleteUserById(id)
-      const currentDevices = users.filter(user => user.id !== id)
+      const response = await FruitsSourceAPI.deleteFruitById(id)
+      const currentDevices = fruits.filter(fruit => fruit.id !== id)
       if (currentDevices.length > 0) {
-        getAllUsers(currentPage, limit)
+        getAllFruits(currentPage, limit)
       } else {
         const prevPage = currentPage > 1 ? currentPage - 1 : 1
-        getAllUsers(prevPage, limit)
+        getAllFruits(prevPage, limit)
       }
       ToastNotification.toastSuccess(response)
     } catch (error) {
@@ -52,22 +52,22 @@ const TableUsers = () => {
     setIsLoading(false)
   }
 
-  const alertDeleteUsers = (id) => {
+  const alertDeleteFruits = (id) => {
     Swal.fire({
       icon: 'warning',
-      title: 'Anda Ingin Hapus Pengguna?',
+      title: 'Anda Ingin Hapus Buah?',
       showCancelButton: true,
       confirmButtonText: 'Delete',
       confirmButtonColor: '#d33'
     }).then((result) => {
       if (result.isConfirmed) {
-        deleteUsers(id)
+        deleteFruits(id)
       }
     })
   }
 
   useEffect(() => {
-    getAllUsers(currentPage, limit)
+    getAllFruits(currentPage, limit)
   }, [currentPage])
 
   return (
@@ -88,10 +88,10 @@ const TableUsers = () => {
               lg:text-3xl
             '
           >
-            Daftar Pengguna
+            Daftar Buah
           </h1>
 
-          <NavLink to='/user/addNewUser'>
+          <NavLink to='/fruits/addNewFruits'>
             <button
               type='button'
               className='
@@ -112,8 +112,8 @@ const TableUsers = () => {
                 rounded
               '
             >
-              <span className='hidden md:inline-block mr-2'>Tambah pengguna</span>
-              <i className="fa-solid fa-user-plus"></i>
+              <span className='hidden md:inline-block mr-2'>Tambah Buah</span>
+              <i className="fa-brands fa-apple"></i>
             </button>
           </NavLink>
         </div>
@@ -126,19 +126,25 @@ const TableUsers = () => {
                     No
                 </th>
                 <th className="px-4 py-3">
-                    Nama Lengkap
+                    Nama
                 </th>
                 <th className="px-4 py-3">
-                    Username
+                    Kandungan Air(g)
+                </th>
+                <th className="px-4 py-3 text-center">
+                    Kalori (Kal)
+                </th>
+                <th className="px-4 py-3 text-center">
+                    Protein(g)
+                </th>
+                <th className="px-4 py-3 text-center">
+                    Lemak(g)
+                </th>
+                <th className="px-4 py-3 text-center">
+                    Karbohidrat(g)
                 </th>
                 <th className="px-4 py-3">
-                    Email
-                </th>
-                <th className="px-4 py-3">
-                    No Handphone
-                </th>
-                <th className="px-4 py-3">
-                    Alamat
+                    Vitamin
                 </th>
                 <th className="px-4 py-3 text-center">
                     Aksi
@@ -148,30 +154,36 @@ const TableUsers = () => {
             <tbody
               className='whitespace-nowrap'
             >
-              { users.map((user, index) => (
+              { fruits.map((fruit, index) => (
                 <tr
                   key={index}
-                  className={`bg-white hover:bg-gray-50 ${index === users.length - 1 ? 'border-b-0' : 'border-b'}`}>
+                  className={`bg-white hover:bg-gray-50 ${index === fruits.length - 1 ? 'border-b-0' : 'border-b'}`}>
                   <td className="px-4 py-3 font-bold">
                     {index + 1 + (currentPage - 1) * limit}
                   </td>
                   <td className="px-4 py-3">
-                    { user.fullname }
+                    { fruit.name }
+                  </td>
+                  <td className="px-4 py-3 text-center">
+                    { fruit.waterPerGram }
+                  </td>
+                  <td className="px-4 py-3 text-center">
+                    { fruit.calorie }
+                  </td>
+                  <td className="px-4 py-3 text-center">
+                    { fruit.protein }
+                  </td>
+                  <td className="px-4 py-3 text-center">
+                    { fruit.fat }
+                  </td>
+                  <td className="px-4 py-3 text-center">
+                    { fruit.carbohydrate }
                   </td>
                   <td className="px-4 py-3">
-                    { user.username }
-                  </td>
-                  <td className="px-4 py-3">
-                    { user.email }
-                  </td>
-                  <td className="px-4 py-3">
-                    { user.phoneNumber }
-                  </td>
-                  <td className="px-4 py-3">
-                    { user.address }
+                    { fruit.vitamin }
                   </td>
                   <td className="px-4 py-3 flex justify-center gap-2 text-white font-semibold">
-                    <NavLink to={`/user/profile/${user.id}`}>
+                    <NavLink to={`/fruits/detail/${fruit.id}`}>
                       <button
                         className='
                           bg-yellow-400
@@ -186,7 +198,7 @@ const TableUsers = () => {
                       </button>
                     </NavLink>
                     <button
-                      onClick={() => alertDeleteUsers(user.id)}
+                      onClick={() => alertDeleteFruits(fruit.id)}
                       className='
                         bg-red-400
                         hover:bg-red-300
@@ -208,7 +220,7 @@ const TableUsers = () => {
         <p
           className='inline-block my-2 mt-5 text-sm'
         >
-          Total Users : { totalUsers }, Page: { totalUsers ? currentPage : 0 } of { totalPages }
+          Total Buah : { totalFruits }, Page: { totalFruits ? currentPage : 0 } of { totalPages }
         </p>
         <div className='my-2'>
           <ReactPaginate
@@ -232,4 +244,4 @@ const TableUsers = () => {
   )
 }
 
-export default TableUsers
+export default TableFruits

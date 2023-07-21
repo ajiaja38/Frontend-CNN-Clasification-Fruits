@@ -1,46 +1,10 @@
 /* eslint-disable react/prop-types */
-import React, { useState } from 'react'
-import { NavLink, useNavigate } from 'react-router-dom'
-import Swal from 'sweetalert2'
-import AuthSourceAPI from '../../api/resources/AuthSource'
-import SpinnerElement from '../helpers/SpinnerElement'
-import ToastNotification from '../helpers/ToasNotify'
+import React from 'react'
+import { NavLink } from 'react-router-dom'
 
 const BottomNavigation = () => {
-  const navigate = useNavigate()
-
-  const [isLoading, setIsLoading] = useState(false)
-
-  const handleLogout = async () => {
-    setIsLoading(true)
-    try {
-      await AuthSourceAPI.logout()
-      localStorage.removeItem('accessToken')
-      localStorage.removeItem('refreshToken')
-      navigate('/')
-    } catch (error) {
-      ToastNotification.toastError(error.response.data.message)
-    }
-    setIsLoading(false)
-  }
-
-  const alerLogout = () => {
-    Swal.fire({
-      icon: 'warning',
-      title: 'Anda Ingin Logout?',
-      showCancelButton: true,
-      confirmButtonText: 'Logout',
-      confirmButtonColor: '#d33'
-    }).then((result) => {
-      if (result.isConfirmed) {
-        handleLogout()
-      }
-    })
-  }
-
   return (
     <>
-      { isLoading && <SpinnerElement/> }
       <div
         className='
           fixed
@@ -95,18 +59,25 @@ const BottomNavigation = () => {
           </div>
         </NavLink>
 
-        <button
-          onClick={alerLogout}
+        <NavLink
+          to='/fruits'
           className='
+            bottomNavigation
+            active:text-blue-500
+          '
+        >
+          <div
+            className='
               flex
               flex-col
               gap-2
               items-center
             '
-        >
-          <i className="fa-solid fa-power-off"></i>
-          <span className='text-xs'>Logout</span>
-        </button>
+          >
+            <i className="fa-brands fa-apple"></i>
+            <span className='text-xs'>Buah</span>
+          </div>
+        </NavLink>
 
       </div>
     </>

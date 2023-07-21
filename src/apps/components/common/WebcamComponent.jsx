@@ -3,6 +3,8 @@ import Webcam from 'react-webcam'
 import dataURItoBlob from '../helpers/CaptureConverter'
 import PredictionAPI from '../../api/resources/PredictionSource'
 import ToastNotification from '../helpers/ToasNotify'
+import CardFruits from './CardFruits'
+import FruitsSourceAPI from '../../api/resources/FruitsSource'
 
 const WebcamComponent = () => {
   const webcamRef = useRef(null)
@@ -23,10 +25,21 @@ const WebcamComponent = () => {
     formData.append('image', data)
     try {
       const response = await PredictionAPI.predict(formData)
+      getFruitByName(response)
+    } catch (error) {
+      ToastNotification.toastError(error.response.data.message)
+    }
+  }
+
+  const getFruitByName = async (name) => {
+    setIsLoading(true)
+    try {
+      const response = await FruitsSourceAPI.getFruitByName(name)
       setPredictionResult(response)
     } catch (error) {
       ToastNotification.toastError(error.response.data.message)
     }
+    setIsLoading(false)
   }
 
   const getCapture = useCallback(() => {
@@ -100,24 +113,8 @@ const WebcamComponent = () => {
       </button>
 
       {
-        predictionResult && (
-          <div
-            className='
-              w-full
-              p-1
-            '
-          >
-            <h1
-              className='
-                text-2xl
-                font-semibold
-                text-center
-              '
-            >
-              {predictionResult}
-            </h1>
-          </div>
-        )
+        predictionResult &&
+        <CardFruits fruit={predictionResult}/>
       }
     </div>
   )

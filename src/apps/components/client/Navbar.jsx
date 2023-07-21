@@ -46,7 +46,7 @@ const NavbarComponent = ({ fullname, id }) => {
   return (
     <>
     { isLoading && < SpinnerElement /> }
-      <div className='difixed inset-x-0 flex justify-between px-5 py-3 bg-white box-border shadow'>
+      <div className='difixed inset-x-0 sticky top-0 flex justify-between px-5 py-3 bg-white box-border shadow'>
         <NavLink to={'/homepageUsers'} className='flex gap-2 justify-center items-center relative'>
           <img src={Logo} alt='seFruits' className='h-8 md:h-10'/>
           <h1 className='font-bold text-lg md:text-2xl inline-block'>SeFruit App</h1>
